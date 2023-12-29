@@ -1,7 +1,8 @@
 from datetime import datetime
-from typing import List, Dict
+from typing import Optional, List, Dict
 from bson import ObjectId
 from app import mongo
+
 
 class Post:
   def __init__(
@@ -10,13 +11,13 @@ class Post:
     body: str,
     author_id: ObjectId,
     _id: ObjectId = None,
-    created_at: datetime = datetime.utcnow()
+    created_at: Optional[datetime] = None
   ) -> None:
     self._id = _id
     self.title = title
     self.body = body
     self.author_id = author_id
-    self.created_at = created_at
+    self.created_at = created_at or datetime.utcnow()
 
 
   @classmethod
@@ -31,13 +32,17 @@ class Post:
 
 
   def to_dict(self) -> Dict[str, any]:
-    return {
-      '_id': self._id,
+    dict = {
       'title': self.title,
       'body': self.body,
       'author_id': self.author_id,
       'created_at': self.created_at,
     }
+
+    if self._id is not None:
+      dict['_id'] = self._id
+
+    return dict
 
 
   def save(self) -> None:

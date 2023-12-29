@@ -3,6 +3,7 @@ from typing import Optional, Dict
 from bson import ObjectId
 from app import mongo
 
+
 class User:
   def __init__(
     self,
@@ -10,13 +11,13 @@ class User:
     password: str,
     _id: ObjectId = None,
     is_admin: bool = False,
-    created_at: datetime = datetime.utcnow()
+    created_at: Optional[datetime] = None
   ) -> None:
-    self._id: _id
+    self._id = _id
     self.username = username
     self.password = password
     self.is_admin = is_admin
-    self.created_at = created_at
+    self.created_at = created_at or datetime.utcnow()
 
 
   @classmethod
@@ -40,13 +41,17 @@ class User:
 
 
   def to_dict(self) -> Dict[str, any]:
-    return {
-      '_id': self._id,
+    dict = {
       'username': self.username,
       'password': self.password,
       'is_admin': self.is_admin,
       'created_at': self.created_at,
     }
+
+    if self._id is not None:
+      dict['_id'] = self._id
+
+    return dict
 
 
   def save(self) -> None:

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config:
   DEBUG = True
   TESTING = True
@@ -17,9 +18,11 @@ class Config:
   JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=3600)  # 1 hour
   JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)  # 30 days
 
+
 class ProductionConfig(Config):
   DEBUG = False
   TESTING = False
+
 
 class DevelopmentConfig(Config):
   pass

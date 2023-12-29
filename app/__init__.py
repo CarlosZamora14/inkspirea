@@ -14,3 +14,6 @@ mongo = PyMongo(app)
 
 from app.views.auth import auth
 app.register_blueprint(auth)
+
+from app.views.blog import blog
+app.register_blueprint(blog)
