@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Dict
 from bson import ObjectId
-from app import mongo
+from flask import current_app
 
 
 class User:
@@ -22,6 +22,8 @@ class User:
 
   @classmethod
   def find_by_username(cls, username: str) -> Optional['User']:
+    mongo = current_app.mongo
+
     user_data = mongo.db.users.find_one({'username': username})
 
     if user_data:
@@ -55,5 +57,7 @@ class User:
 
 
   def save(self) -> None:
+    mongo = current_app.mongo
+
     result = mongo.db.users.insert_one(self.to_dict())
     self._id = result.inserted_id

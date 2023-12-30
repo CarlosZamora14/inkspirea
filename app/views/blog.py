@@ -2,6 +2,7 @@ from flask import (
   render_template, g, Blueprint, flash, redirect, request, url_for
 )
 
+
 blog = Blueprint('blog', __name__)
 
 

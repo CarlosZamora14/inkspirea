@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Dict
 from bson import ObjectId
-from app import mongo
+from flask import current_app
 
 
 class Post:
@@ -22,6 +22,8 @@ class Post:
 
   @classmethod
   def find_posts_by_author(cls, author_id: ObjectId) -> List['Post']:
+    mongo = current_app.mongo
+
     posts = mongo.db.posts.find({'author_id': author_id})
     post_list = [Post(**post) for post in posts]
     return post_list
@@ -46,5 +48,7 @@ class Post:
 
 
   def save(self) -> None:
+    mongo = current_app.mongo
+
     result = mongo.db.posts.insert_one(self.to_dict())
     self._id = result.inserted_id

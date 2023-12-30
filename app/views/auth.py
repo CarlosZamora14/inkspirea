@@ -3,6 +3,7 @@ from flask import (
   jsonify,
   Blueprint,
   flash,
+  g,
   redirect,
   request,
   url_for,
@@ -17,9 +18,19 @@ from flask_jwt_extended import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.models.user import User
-from app import jwt
+
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
+
+
+# @auth.before_app_request
+# def load_logged_in_user():
+#   user_id = session.get('user_id')
+
+#   if user_id is None:
+#     g.user = None
+#   else:
+#     g.user = User.query.get_or_404(user_id)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -51,10 +62,10 @@ def login():
       access_token = create_access_token(identity=str(user._id), additional_claims=additional_claims)
       refresh_token = create_refresh_token(identity=str(user._id), additional_claims=additional_claims)
 
-      response = make_response()
-      response.set_cookie('jwt_token', value=access_token, httponly=True)
-      response.set_cookie('jwt_refresh_token', value=refresh_token, httponly=True)
-      return redirect(url_for('blog.index'), response=response)
+      response = make_response(redirect(url_for('blog.index')))
+      response.set_cookie('access_token_cookie', value=access_token, httponly=True)
+      response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True)
+      return response
 
   return render_template('auth/login.html')
 
@@ -88,22 +99,37 @@ def signup():
   return render_template('auth/signup.html')
 
 
-@auth.route('/protected', methods=['GET'])
-def protected():
-  access_token = request.cookies.get('jwt_token')
-  refresh_token = request.cookies.get('jwt_refresh_token')
+# @auth.route('/protected', methods=['GET'])
+# @jwt_required(locations=['cookies'])
+# def protected():
+#   identity = get_jwt_identity()
+#   access_token = request.cookies.get('access_token_cookie')
+#   refresh_token = request.cookies.get('refresh_token_cookie')
 
-  return jsonify(token=access_token, refresh_token=refresh_token)
+#   try:
+#     payload = decode_token(access_token)
+#     return jsonify(identity=identity, token=access_token, refresh_token=refresh_token, payload=payload)
+#   except jwt.ExpiredSignatureError:
+#     return None
+
+
+# @auth.route('/protected-refresh', methods=['GET'])
+# @jwt_required(refresh=True, locations=['cookies'])
+# def protected_refresh():
+#   identity = get_jwt_identity()
+#   access_token = request.cookies.get('access_token_cookie')
+#   refresh_token = request.cookies.get('refresh_token_cookie')
+
+#   try:
+#     payload = decode_token(access_token)
+#     return jsonify(identity=identity, token=access_token, refresh_token=refresh_token, payload=payload)
+#   except jwt.ExpiredSignatureError:
+#     return None
 
 
 @auth.route('/refresh', methods=['POST'])
+@jwt_required()
 def refresh():
-  refresh_token = request.cookies.get('jwt_refresh_token')
-  new_access_token = refresh_access_token(refresh_token)
-
-  if new_access_token == None:
-    return jsonify(msg='Invalid refresh token'), 401
-
   current_user = get_jwt_identity()
   new_access_token = create_access_token(identity=current_user)
   new_refresh_token = create_refresh_token(identity=current_user)
@@ -130,11 +156,11 @@ def generate_refresh_token(user: User) -> str:
   return refresh_token
 
 
-def refresh_access_token(refresh_token: str) -> str | None:
-  try:
-    payload = decode_token(refresh_token)
-    user_id = payload['sub']
-    new_access_token = create_access_token(identity=user_id)
-    return new_access_token
-  except jwt.ExpiredSignatureError:
-    return None
+# def refresh_access_token(refresh_token: str) -> str | None:
+#   try:
+#     payload = decode_token(refresh_token)
+#     user_id = payload['sub']
+#     new_access_token = create_access_token(identity=user_id)
+#     return new_access_token
+#   except jwt.ExpiredSignatureError:
+#     return None
