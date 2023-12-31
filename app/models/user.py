@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import Optional, Dict
-from bson import ObjectId
+
 from flask import current_app
+from flask_pymongo import ObjectId
 
 
 class User:
@@ -20,26 +21,11 @@ class User:
     self.created_at = created_at or datetime.utcnow()
 
 
-  @classmethod
-  def find_by_username(cls, username: str) -> Optional['User']:
+  def save(self) -> None:
     mongo = current_app.mongo
 
-    user_data = mongo.db.users.find_one({'username': username})
-
-    if user_data:
-      return cls(
-        _id=user_data['_id'],
-        username=user_data['username'],
-        password=user_data['password'],
-        is_admin=user_data['is_admin'],
-        created_at=user_data['created_at'],
-      )
-
-    return None
-
-
-  def __repr__(self) -> str:
-    return f'User: {self.username}'
+    result = mongo.db.users.insert_one(self.to_dict())
+    self._id = result.inserted_id
 
 
   def to_dict(self) -> Dict[str, any]:
@@ -56,8 +42,51 @@ class User:
     return dict
 
 
-  def save(self) -> None:
+  def to_json(self) -> Dict[str, any]:
+    return {
+      '_id': str(self._id),
+      'username': self.username,
+      'password': self.password,
+      'is_admin': self.is_admin,
+      'created_at': self.created_at.isoformat() if self.created_at else None,
+    }
+
+
+  @classmethod
+  def find_by_username(cls, username: str) -> Optional['User']:
     mongo = current_app.mongo
 
-    result = mongo.db.users.insert_one(self.to_dict())
-    self._id = result.inserted_id
+    user_data = mongo.db.users.find_one({'username': username})
+
+    if user_data:
+      return cls(
+        _id=user_data.get('_id'),
+        username=user_data.get('username'),
+        password=user_data.get('password'),
+        is_admin=user_data.get('is_admin'),
+        created_at=user_data.get('created_at'),
+      )
+
+    return None
+
+
+  @classmethod
+  def find_by_id(cls, _id: str) -> Optional['User']:
+    mongo = current_app.mongo
+
+    user_data = mongo.db.users.find_one({'_id': ObjectId(_id)})
+
+    if user_data:
+      return cls(
+        _id=user_data.get('_id'),
+        username=user_data.get('username'),
+        password=user_data.get('password'),
+        is_admin=user_data.get('is_admin'),
+        created_at=user_data.get('created_at'),
+      )
+
+    return None
+
+
+  def __repr__(self) -> str:
+    return f'User: {self.username}'
