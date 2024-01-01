@@ -12,11 +12,14 @@ from flask_jwt_extended import (
   create_access_token,
   create_refresh_token,
   get_jwt_identity,
+  set_access_cookies,
+  set_refresh_cookies,
+  decode_token,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.models.user import User
-from app.helpers.url_utilities import decode_next_url, encode_next_url
+from app.helpers.url_utilities import decode_next_url
 
 auth = Blueprint('auth', __name__)
 
@@ -94,7 +97,7 @@ def signup():
 
 
 @auth.route('/refresh', methods=['GET'])
-@jwt_required(refresh=True, locations=['cookies'])
+@jwt_required(refresh=True)
 def refresh_access_token():
   next_url = decode_next_url(request.args.get('next'))
   current_user = get_jwt_identity()
@@ -112,5 +115,5 @@ def set_cookies(response, current_user: str) -> None:
   access_token = create_access_token(identity=current_user)
   refresh_token = create_refresh_token(identity=current_user)
 
-  response.set_cookie('access_token_cookie', value=access_token, httponly=True)
-  response.set_cookie('refresh_token_cookie', value=refresh_token, httponly=True)
+  set_access_cookies(response, access_token)
+  set_refresh_cookies(response, refresh_token)
