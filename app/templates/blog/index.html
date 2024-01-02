@@ -7,7 +7,7 @@ Blog
 <div class="visually-hidden">
   <h1>Inkspirea main page</h1>
 </div>
-<section class="hero">
+<section class="hero container-lg">
   <figure class="hero__figure">
     <img src="{{ url_for('static', filename='images/olivia.png') }}" alt="" class="hero__img">
   </figure>
@@ -16,27 +16,29 @@ Blog
     <h2 class="hero__title">Empower your voice</h2>
   </div>
 
-  <div class="container hero__box">
-    <h3 class="hero__subtitle">Your space</h3>
-    <p class="hero__text">
-      We believe that everyone has a unique story to tell, and we're here to provide you with the perfect canvas to
-      paint your thoughts, experiences, and ideas. Your blog is your personal space to shine.
-    </p>
-  </div>
+  <div class="hero__box container container-lg-none">
+    <div>
+      <h3 class="hero__subtitle">Your space</h3>
+      <p class="hero__text">
+        We believe that everyone has a unique story to tell, and we're here to provide you with the perfect canvas to
+        paint your thoughts, experiences, and ideas. Your blog is your personal space to shine.
+      </p>
+    </div>
 
-  <div class="container hero__box">
-    <h3 class="hero__subtitle">Inspiration</h3>
-    <p class="hero__text">
-      Inkspirea is a platform where the written word is not just a means of expression but a source of inspiration and
-      growth.
-    </p>
+    <div>
+      <h3 class="hero__subtitle">Inspiration</h3>
+      <p class="hero__text">
+        Inkspirea is a platform where the written word is not just a means of expression but a source of inspiration and
+        growth.
+      </p>
+    </div>
   </div>
 
   <div class="hero__get-started">
     <h3 class="hero__subtitle visually-hidden">Get started right now</h3>
     <p class="visually-hidden">Create your account and start creating your blog.</p>
     <div class="hero__button-wrapper">
-      <a href="{{ url_for('auth.signup') }}" class="button button--hero">Register</a>
+      <a href="{{ url_for('auth.signup') }}" class="button button--hero">Create account</a>
       <svg viewBox="0 0 69 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero__button-wrapper__highlight"
         aria-hidden="true">
         <path fill-rule="evenodd" clip-rule="evenodd"
