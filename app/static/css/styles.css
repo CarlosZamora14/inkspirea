@@ -229,7 +229,7 @@ h6 {
 .header__logo {
   font-family: var(--ff-nunito);
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   color: rgba(var(--dark-clr));
 }
@@ -534,4 +534,42 @@ h6 {
   .hero {
     grid-template-columns: 2fr 2fr 1fr;
   }
+}
+
+/* Form styles */
+.form {
+  margin-top: 2rem;
+}
+
+.form__field {
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.form__input, .form__text-area {
+  padding: 0.4375rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(var(--dark-clr) / 0.25);
+  outline-color: rgba(var(--primary-1-clr) / 0.4);
+}
+
+.form__input:is(:focus, :active) {
+  box-shadow: 2px 2px 12px rgba(var(--primary-2-clr)), 1px 1px 8px rgba(var(--primary-1-clr) / 0.3);
+}
+
+.form__text-area {
+  resize: none;
+}
+
+.form__text-area:is(:focus, :active) {
+  box-shadow: 2px 2px 12px rgba(var(--primary-2-clr)), 1px 1px 8px rgba(var(--primary-1-clr) / 0.3);
+}
+
+.button--form {
+  background-color: rgba(var(--primary-1-clr));
+  color: rgba(var(--white-clr));
+  border: none;
 }

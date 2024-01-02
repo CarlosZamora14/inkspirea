@@ -4,15 +4,19 @@
 {% endblock %}
 
 {% block content %}
-  <div class="signup">
-    <form method="POST">
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username" required>
+  <div class="signup container">
+    <form method="POST" class="form">
+      <div class="form__field">
+        <label for="username" class="form__label">Username</label>
+        <input type="text" name="username" id="username" required class="form__input">
+      </div>
 
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" required>
+      <div class="form__field">
+        <label for="password" class="form__label">Password</label>
+        <input type="password" name="password" id="password" required class="form__input">
+      </div>
 
-      <button type="submit">Register</button>
+      <button type="submit" class="button button--form">Sign up</button>
     </form>
   </div>
 {% endblock %}
