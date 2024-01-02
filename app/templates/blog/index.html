@@ -1,21 +1,75 @@
 {% extends 'base.html' %}
 {% block title %}
-  Blog
+Blog
 {% endblock %}
 
 {% block content %}
-  <h1>Welcome to the blog</h1>
+<div class="visually-hidden">
+  <h1>Inkspirea main page</h1>
+</div>
+<section class="hero">
+  <figure class="hero__figure">
+    <img src="{{ url_for('static', filename='images/olivia.png') }}" alt="" class="hero__img">
+  </figure>
 
-  {% for post in posts %}
-    <div style="margin-bottom: 6rem; padding: 0.5rem 1rem; border: 1px solid #E2E2E2;">
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.body }}</p>
-      <a
-        href="{{ url_for('blog.update_post', post_id=post._id) }}"
-        style="margin-top: 2rem; background-color: purple; color: whitesmoke;">
-        {{ post._id }}
-      </a>
+  <div class="hero__header">
+    <h2 class="hero__title">Empower your voice</h2>
+  </div>
+
+  <div class="container hero__box">
+    <h3 class="hero__subtitle">Your space</h3>
+    <p class="hero__text">
+      We believe that everyone has a unique story to tell, and we're here to provide you with the perfect canvas to
+      paint your thoughts, experiences, and ideas. Your blog is your personal space to shine.
+    </p>
+  </div>
+
+  <div class="container hero__box">
+    <h3 class="hero__subtitle">Inspiration</h3>
+    <p class="hero__text">
+      Inkspirea is a platform where the written word is not just a means of expression but a source of inspiration and
+      growth.
+    </p>
+  </div>
+
+  <div class="hero__get-started">
+    <h3 class="hero__subtitle visually-hidden">Get started right now</h3>
+    <p class="visually-hidden">Create your account and start creating your blog.</p>
+    <div class="hero__button-wrapper">
+      <a href="{{ url_for('auth.signup') }}" class="button button--hero">Register</a>
+      <svg viewBox="0 0 69 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero__button-wrapper__highlight"
+        aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M20.0865 2.82053C17.5338 2.9424 15.0075 3.04059 12.4599 3.23663C11.9116 3.27682 11.5048 3.7503 11.5476 4.29373C11.589 4.84085 12.068 5.24932 12.6126 5.20769C15.1462 5.01467 17.6512 4.91662 20.1861 4.79633C20.7337 4.76864 21.1541 4.3046 21.1275 3.76327C21.0986 3.21681 20.6341 2.79284 20.0865 2.82053Z" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M31.5409 20.5694C25.7203 26.1437 20.1863 32.0086 14.489 37.7034C14.1027 38.0916 14.105 38.7169 14.4911 39.1016C14.8809 39.4879 15.506 39.4905 15.896 39.1038C21.5816 33.4171 27.1038 27.5604 32.9149 21.9993C33.3108 21.6192 33.3212 20.9946 32.9431 20.6002C32.5613 20.2044 31.9354 20.1929 31.5409 20.5694Z" />
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M57.9136 32.9336C56.4708 39.5891 55.2126 46.2956 53.6953 52.9346C53.5768 53.4659 53.9103 53.9956 54.4415 54.1187C54.9764 54.2431 55.5081 53.9077 55.6304 53.3779C57.1468 46.7301 58.408 40.0162 59.8499 33.3519C59.9647 32.8192 59.6261 32.2916 59.092 32.176C58.5542 32.0588 58.0299 32.3973 57.9136 32.9336Z" />
+      </svg>
+      <svg viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero__button-wrapper__star"
+        aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M13.8638 6.8973C13.77 6.34105 13.6994 5.79112 13.6538 5.24112C13.585 4.41612 13.6275 3.58481 13.6031 2.75981C13.5925 2.40981 13.5506 1.49732 13.5675 1.36607C13.7206 0.222319 14.6437 0.0472981 14.9137 0.0160481C15.0444 -0.00270186 16.3856 -0.152635 16.675 1.33487C17.03 3.15362 17.1438 4.98484 17.0181 6.77859C17.3113 8.30359 17.8125 9.82231 18.4744 11.1973C21.1081 16.6661 26.1269 17.1973 31.5644 17.1473C32.4006 17.1348 33.095 17.7911 33.1388 18.6223C33.1825 19.4598 32.56 20.1848 31.7275 20.2598C28.6881 20.5536 23.2956 22.9911 21.4312 25.5286C21.0412 26.0598 20.8144 27.3411 20.5144 28.5974C20.0956 30.3411 19.5975 32.0661 19.0394 32.7911C18.9556 32.9036 17.9375 34.0536 17.6337 34.2224C16.9037 34.6224 16.3194 34.3911 15.9875 34.1786C15.6556 33.9661 15.28 33.5473 15.13 32.8536C14.9731 32.1286 15.1056 30.641 15.0813 30.3223C14.9925 29.166 14.7613 26.8973 14.2894 24.9473C14.035 23.8973 13.7638 22.9286 13.315 22.4473C11.6538 20.6661 8.99751 20.9286 6.76063 21.2223C6.50376 21.2536 6.24689 21.2911 5.99064 21.3224C5.08001 21.5911 4.11311 21.7911 3.09124 21.9098C1.54811 22.0911 1.29438 20.6723 1.28063 20.5786C1.25188 20.3723 1.14499 19.3098 2.30812 18.8848C2.43499 18.8411 3.37125 18.6348 3.73188 18.5536C4.23438 18.4411 4.74249 18.3536 5.25249 18.2724C10.5206 16.6348 13.3819 12.0348 13.8638 6.8973ZM15.6719 12.5786C17.6606 16.6911 20.6787 18.6786 24.2562 19.5786H24.2556C22.0219 20.7473 19.99 22.2099 18.9131 23.6786C18.5044 24.2349 18.1294 25.3536 17.7913 26.6098C17.6081 25.4411 17.3606 24.1973 17.0338 23.1348C16.6619 21.9223 16.1612 20.9161 15.6025 20.3161C14.5237 19.1599 13.17 18.5161 11.7144 18.1974C13.4569 16.6536 14.7781 14.7286 15.6719 12.5786Z" />
+      </svg>
     </div>
+    <img src="{{ url_for('static', filename='images/people-1.png') }}" alt="" loading="lazy"
+      class="hero__get-started__images">
+    <img src="{{ url_for('static', filename='images/people-2.png') }}" alt="" loading="lazy"
+      class="hero__get-started__images">
+  </div>
+</section>
+
+<section class="posts container">
+  {% for post in posts %}
+  <div style="margin-bottom: 2rem; padding: 0.5rem 1rem; border: 1px solid #E2E2E2; border-radius: 0.5rem;">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+    <a href="{{ url_for('blog.update_post', post_id=post._id) }}"
+      style="margin-top: 0.75rem; color: purple; display: inline-block;">
+      {{ post._id }}
+    </a>
+  </div>
   {% endfor %}
+</section>
 
 {% endblock %}

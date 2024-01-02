@@ -75,11 +75,13 @@ def create_app():
 
   @jwt.invalid_token_loader
   def invalid_token_callback(error):
+    return redirect(url_for('auth.login'))
     return jsonify(message='Signature verification failed', error=error), 401
 
 
   @jwt.unauthorized_loader
   def missing_token_callback(error):
+    return redirect(url_for('auth.login'))
     return jsonify(message='Unathorized request', error=error), 401
 
 
