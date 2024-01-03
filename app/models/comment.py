@@ -50,7 +50,7 @@ class Comment:
 
 
   def to_dict(self) -> Dict[str, any]:
-    dict = {
+    comment_dict = {
       'content': self.content,
       'post_id': self.post_id,
       'author_id': self.author_id,
@@ -59,9 +59,9 @@ class Comment:
     }
 
     if self._id is not None:
-      dict['_id'] = self._id
+      comment_dict._id = self._id
 
-    return dict
+    return comment_dict
 
 
   @classmethod

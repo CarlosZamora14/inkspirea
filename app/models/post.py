@@ -30,6 +30,12 @@ class Post:
     self._id = result.inserted_id
 
 
+  def delete(self) -> None:
+    mongo = current_app.mongo
+
+    mongo.db.posts.delete_one({'_id': self._id})
+
+
   def update(self, title: str, body: str):
     mongo = current_app.mongo
 
@@ -52,7 +58,7 @@ class Post:
 
 
   def to_dict(self) -> Dict[str, any]:
-    dict = {
+    post_dict = {
       'title': self.title,
       'body': self.body,
       'author_id': self.author_id,
@@ -61,9 +67,9 @@ class Post:
     }
 
     if self._id is not None:
-      dict['_id'] = self._id
+      post_dict._id = self._id
 
-    return dict
+    return post_dict
 
 
   def to_json(self) -> Dict[str, any]:

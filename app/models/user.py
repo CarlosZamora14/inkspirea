@@ -37,7 +37,7 @@ class User:
     }
 
     if self._id is not None:
-      user_dict['_id'] = self._id
+      user_dict._id = self._id
 
     return user_dict
 

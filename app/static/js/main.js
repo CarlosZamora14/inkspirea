@@ -4,15 +4,18 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function getPostRequestOptions(body) {
+function getRequestOptions(body = null, method = 'POST') {
   const options = {
-    method: 'POST',
+    method: method,
     credentials: 'same-origin',
     headers: {
       'X-CSRF-TOKEN': getCookie('csrf_access_token'),
     },
-    body: body,
   };
+
+  if (body) {
+    options.body = body;
+  }
 
   return options;
 };
@@ -20,17 +23,20 @@ function getPostRequestOptions(body) {
 const createPostForm = document.getElementById('create-post');
 const updatePostForm = document.getElementById('update-post');
 
-async function sendPostRequest(data, url) {
-  const response = await fetch(url, getPostRequestOptions(data));
-  const json = await response.json();
-  console.log(json);
+async function sendRequest(url, data, method) {
+  const response = await fetch(url, getRequestOptions(data, method));
+  if (response.status === 201) {
+    window.location.href = '/';
+  }
+  // const json = await response.json();
+  // console.log(json);
 }
 
 if (createPostForm) {
   createPostForm.addEventListener('submit', evt => {
     evt.preventDefault();
     const formData = new FormData(evt.currentTarget);
-    sendPostRequest(formData, '/create');
+    sendRequest('/create', formData);
   });
 }
 
@@ -38,6 +44,13 @@ if (updatePostForm) {
   updatePostForm.addEventListener('submit', evt => {
     evt.preventDefault();
     const formData = new FormData(evt.currentTarget);
-    sendPostRequest(formData, window.location.href);
+    sendRequest(window.location.href, formData);
   });
 }
+
+document.addEventListener('click', evt => {
+  if (evt.target.classList.contains('delete-button')) {
+    const button = evt.target;
+    sendRequest(`/delete/${button.dataset['postId']}`, null, 'DELETE');
+  }
+});

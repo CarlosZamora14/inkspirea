@@ -7,7 +7,7 @@
 <div class="visually-hidden">
   <h1>Inkspirea main page</h1>
 </div>
-<section class="hero container-lg">
+<section class="hero container-lg" style="margin-bottom: 2rem;">
   <figure class="hero__figure">
     <img src="{{ url_for('static', filename='images/olivia.png') }}" alt="" class="hero__img">
   </figure>
@@ -79,6 +79,9 @@
         style="margin-top: 0.75rem; color: purple; display: inline-block;">
         Edit post
       </a>
+      <button class="delete-button" data-post-id="{{ post._id }}" style="cursor: pointer; margin-top: 0.75rem; color: purple; display: inline-block; border-radius: 0.25rem; border: 1px solid rgb(228, 228, 229); background-color: rgb(244, 246, 248); margin-left: 1rem;">
+        &#128465;
+      </button>
     {% endif %}
   </div>
   {% endfor %}
