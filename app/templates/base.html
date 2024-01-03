@@ -42,12 +42,22 @@
         </nav>
 
         <div class="header__buttons">
-          <a href="/auth/login" class="button">
-            Login
-          </a>
-          <a href="/auth/signup" class="button button--signup">
-            Sign up
-          </a>
+          {% if g.user %}
+            <a href="{{ url_for('auth.logout') }}" class="button">
+              Logout
+            </a>
+            <a href="{{ url_for('blog.create_post') }}" class="button button--signup">
+              Create post
+            </a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}" class="button">
+              Login
+            </a>
+            <a href="{{ url_for('auth.signup') }}" class="button button--signup">
+              Sign up
+            </a>
+
+          {% endif %}
         </div>
       </div>
 
@@ -58,7 +68,9 @@
   </header>
 
   {% for message in get_flashed_messages() %}
-  <div class="flash">{{ message }}</div>
+    <section class="container">
+      <div class="flash">{{ message }}</div>
+    </section>
   {% endfor %}
 
   {% block content %}

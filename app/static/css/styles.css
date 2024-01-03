@@ -537,8 +537,8 @@ h6 {
 }
 
 /* Form styles */
-.form {
-  margin-top: 2rem;
+.form__title {
+  margin: 2rem 0 0.5rem;
 }
 
 .form__field {
@@ -572,4 +572,13 @@ h6 {
   background-color: rgba(var(--primary-1-clr));
   color: rgba(var(--white-clr));
   border: none;
+}
+
+
+/* Flash messages */
+.flash {
+  padding-top: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(224, 57, 57);
 }

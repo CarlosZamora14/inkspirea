@@ -6,6 +6,8 @@ from flask import (
   request,
   url_for,
   make_response,
+  g,
+  current_app,
 )
 from flask_jwt_extended import (
   jwt_required,
@@ -15,6 +17,8 @@ from flask_jwt_extended import (
   set_access_cookies,
   set_refresh_cookies,
   decode_token,
+  unset_refresh_cookies,
+  unset_jwt_cookies,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -22,6 +26,16 @@ from app.models.user import User
 from app.helpers.url_utilities import decode_next_url
 
 auth = Blueprint('auth', __name__)
+
+
+@auth.before_app_request
+def load_logged_in_user():
+  try:
+    access_token = request.cookies.get(current_app.config.get('JWT_ACCESS_COOKIE_NAME'))
+    jwt_data = decode_token(access_token)
+    g.user = User.find_by_id(jwt_data.get('sub'))
+  except:
+    pass
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -106,6 +120,18 @@ def refresh_access_token():
 
   response = make_response(redirect(location))
   set_cookies(response, current_user)
+
+  return response
+
+
+@auth.route('/logout', methods=['GET'])
+@jwt_required()
+def logout():
+  response = make_response(redirect(url_for('auth.login')))
+
+  g.user = None
+  unset_jwt_cookies(response)
+  unset_refresh_cookies(response)
 
   return response
 

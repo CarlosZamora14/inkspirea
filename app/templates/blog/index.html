@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-Blog
+  Blog
 {% endblock %}
 
 {% block content %}
@@ -38,7 +38,11 @@ Blog
     <h3 class="hero__subtitle visually-hidden">Get started right now</h3>
     <p class="visually-hidden">Create your account and start creating your blog.</p>
     <div class="hero__button-wrapper">
-      <a href="{{ url_for('auth.signup') }}" class="button button--hero">Create account</a>
+      {% if g.user %}
+        <a href="{{ url_for('blog.create_post') }}" class="button button--hero">Create post</a>
+      {% else %}
+        <a href="{{ url_for('auth.signup') }}" class="button button--hero">Create account</a>
+      {% endif %}
       <svg viewBox="0 0 69 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="hero__button-wrapper__highlight"
         aria-hidden="true">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -66,11 +70,16 @@ Blog
   {% for post in posts %}
   <div style="margin-bottom: 2rem; padding: 0.5rem 1rem; border: 1px solid #E2E2E2; border-radius: 0.5rem;">
     <h2>{{ post.title }}</h2>
+    <p style="color: #5a5a61;">
+      Posted by @{{ users_dict[post.author_id] }} on {{ post.created_at.strftime('%b %#d, %Y') }}.
+    </p>
     <p>{{ post.body }}</p>
-    <a href="{{ url_for('blog.update_post', post_id=post._id) }}"
-      style="margin-top: 0.75rem; color: purple; display: inline-block;">
-      {{ post._id }}
-    </a>
+    {% if g.user and g.user._id == post.author_id %}
+      <a href="{{ url_for('blog.update_post', post_id=post._id) }}"
+        style="margin-top: 0.75rem; color: purple; display: inline-block;">
+        Edit post
+      </a>
+    {% endif %}
   </div>
   {% endfor %}
 </section>

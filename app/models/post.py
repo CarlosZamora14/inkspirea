@@ -82,7 +82,7 @@ class Post:
     mongo = current_app.mongo
 
     posts = mongo.db.posts.find()
-    post_list = [Post(**post) for post in posts]
+    post_list = [cls(**post) for post in posts]
     return post_list
 
 
@@ -91,16 +91,20 @@ class Post:
     mongo = current_app.mongo
 
     posts = mongo.db.posts.find({'author_id': ObjectId(author_id)})
-    post_list = [Post(**post) for post in posts]
+    post_list = [cls(**post) for post in posts]
     return post_list
 
 
   @classmethod
-  def find_post_by_id(cls, _id: str) -> 'Post':
+  def find_post_by_id(cls, _id: str) -> Optional['Post']:
     mongo = current_app.mongo
 
     post = mongo.db.posts.find_one({'_id': ObjectId(_id)})
-    return Post(**post)
+
+    if post:
+      return cls(**post)
+
+    return None
 
 
   def __repr__(self) -> str:

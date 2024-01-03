@@ -2,6 +2,7 @@ from flask import render_template, Blueprint, request, url_for, redirect, flash,
 from flask_jwt_extended import jwt_required, get_current_user
 
 from app.models.post import Post
+from app.models.user import User
 
 
 blog = Blueprint('blog', __name__)
@@ -11,7 +12,9 @@ blog = Blueprint('blog', __name__)
 @jwt_required()
 def index():
   posts = Post.fetch_all()
-  return render_template('blog/index.html', posts=posts)
+  users_dict = User.get_dict_ids()
+
+  return render_template('blog/index.html', posts=posts, users_dict=users_dict)
 
 
 @blog.route('/create', methods=['GET', 'POST'])

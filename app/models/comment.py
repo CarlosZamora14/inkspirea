@@ -69,7 +69,7 @@ class Comment:
     mongo = current_app.mongo
 
     comments = mongo.db.comments.find({'author_id': ObjectId(author_id)})
-    comment_list = [Comment(**comment) for comment in comments]
+    comment_list = [cls(**comment) for comment in comments]
     return comment_list
 
 
@@ -78,16 +78,21 @@ class Comment:
     mongo = current_app.mongo
 
     comments = mongo.db.comments.find({'post_id': ObjectId(post_id)})
-    comment_list = [Comment(**comment) for comment in comments]
+    comment_list = [cls(**comment) for comment in comments]
     return comment_list
 
 
   @classmethod
-  def find_comment_by_id(cls, _id: str) -> 'Comment':
+  def find_comment_by_id(cls, _id: str) -> Optional['Comment']:
     mongo = current_app.mongo
 
     comment = mongo.db.comments.find_one({'_id': ObjectId(_id)})
-    return Comment(**comment)
+
+    if comment:
+      return cls(**comment)
+
+    return None
+
 
   def __repr__(self) -> str:
     return f'Comment: {self.content}'

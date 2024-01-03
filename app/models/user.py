@@ -29,7 +29,7 @@ class User:
 
 
   def to_dict(self) -> Dict[str, any]:
-    dict = {
+    user_dict = {
       'username': self.username,
       'password': self.password,
       'is_admin': self.is_admin,
@@ -37,9 +37,9 @@ class User:
     }
 
     if self._id is not None:
-      dict['_id'] = self._id
+      user_dict['_id'] = self._id
 
-    return dict
+    return user_dict
 
 
   def to_json(self) -> Dict[str, any]:
@@ -59,13 +59,7 @@ class User:
     user_data = mongo.db.users.find_one({'username': username})
 
     if user_data:
-      return cls(
-        _id=user_data.get('_id'),
-        username=user_data.get('username'),
-        password=user_data.get('password'),
-        is_admin=user_data.get('is_admin'),
-        created_at=user_data.get('created_at'),
-      )
+      return cls(**user_data)
 
     return None
 
@@ -77,15 +71,19 @@ class User:
     user_data = mongo.db.users.find_one({'_id': ObjectId(_id)})
 
     if user_data:
-      return cls(
-        _id=user_data.get('_id'),
-        username=user_data.get('username'),
-        password=user_data.get('password'),
-        is_admin=user_data.get('is_admin'),
-        created_at=user_data.get('created_at'),
-      )
+      return cls(**user_data)
 
     return None
+
+
+  @classmethod
+  def get_dict_ids(cls) -> dict[ObjectId, str]:
+    mongo = current_app.mongo
+
+    users = mongo.db.users.find({})
+    users_dict = {user.get('_id'): user.get('username') for user in users}
+
+    return users_dict
 
 
   def __repr__(self) -> str:
