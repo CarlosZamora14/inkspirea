@@ -28,8 +28,6 @@ async function sendRequest(url, data, method) {
   if (response.status === 201) {
     window.location.href = '/';
   }
-  // const json = await response.json();
-  // console.log(json);
 }
 
 if (createPostForm) {
@@ -50,7 +48,15 @@ if (updatePostForm) {
 
 document.addEventListener('click', evt => {
   if (evt.target.classList.contains('delete-button')) {
+    evt.stopPropagation();
     const button = evt.target;
-    sendRequest(`/delete/${button.dataset['postId']}`, null, 'DELETE');
+    sendRequest(`/delete/${button.parentElement.dataset['postId']}`, null, 'DELETE');
   }
+}, true);
+
+const posts = document.querySelectorAll('.post');
+posts.forEach(post => {
+  post.addEventListener('click', evt => {
+    window.location.href = `/posts/${post.dataset.postId}`;
+  });
 });

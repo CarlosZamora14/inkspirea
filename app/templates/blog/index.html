@@ -68,7 +68,7 @@
 <section class="posts container">
   <h2 style="margin-bottom: 0.5rem;">Recent posts</h2>
   {% for post in posts %}
-  <div style="margin-bottom: 2rem; padding: 0.5rem 1rem; border: 1px solid #E2E2E2; border-radius: 0.5rem;">
+  <div style="" class="post-card" data-post-id="{{ post._id }}">
     <h2>{{ post.title }}</h2>
     <p style="color: #5a5a61;">
       Posted by @{{ users_dict[post.author_id] }} on {{ post.created_at.strftime('%b %#d, %Y') }}.
@@ -79,7 +79,7 @@
         style="margin-top: 0.75rem; color: purple; display: inline-block;">
         Edit post
       </a>
-      <button class="delete-button" data-post-id="{{ post._id }}" style="cursor: pointer; margin-top: 0.75rem; color: purple; display: inline-block; border-radius: 0.25rem; border: 1px solid rgb(228, 228, 229); background-color: rgb(244, 246, 248); margin-left: 1rem;">
+      <button class="delete-button" style="cursor: pointer; margin-top: 0.75rem; color: purple; display: inline-block; border-radius: 0.25rem; border: 1px solid rgb(228, 228, 229); background-color: rgb(244, 246, 248); margin-left: 1rem;">
         &#128465;
       </button>
     {% endif %}

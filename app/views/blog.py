@@ -18,6 +18,17 @@ def index():
   return render_template('blog/index.html', posts=posts, users_dict=users_dict)
 
 
+@blog.route('/posts/<post_id>', methods=['GET'])
+@jwt_required()
+def show_post(post_id):
+  post = Post.find_post_by_id(post_id)
+
+  if post is None:
+    return jsonify(message=f'Post with id {post_id} does not exist'), 404
+
+  return render_template('blog/post.html', post=post)
+
+
 @blog.route('/create', methods=['GET', 'POST'])
 @jwt_required()
 def create_post():
