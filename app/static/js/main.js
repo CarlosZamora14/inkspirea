@@ -77,3 +77,15 @@ posts.forEach(post => {
     window.location.href = `/posts/${post.dataset.postId}`;
   });
 });
+
+const hamburgerButton = document.querySelector('.hamburger-button');
+
+if (hamburgerButton) {
+  hamburgerButton.addEventListener('click', () => {
+    if (hamburgerButton.classList.contains('active')) {
+      hamburgerButton.classList.remove('active');
+    } else {
+      hamburgerButton.classList.add('active');
+    }
+  });
+}
