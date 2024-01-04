@@ -68,7 +68,7 @@
 <section class="posts container">
   <h2 style="margin-bottom: 0.5rem;">Recent posts</h2>
   {% for post in posts %}
-  <div style="" class="post-card" data-post-id="{{ post._id }}">
+  <div class="post-card" data-post-id="{{ post._id }}">
     <h2>{{ post.title }}</h2>
     <p style="color: #5a5a61;">
       Posted by @{{ users_dict[post.author_id] }} on {{ post.created_at.strftime('%b %#d, %Y') }}.

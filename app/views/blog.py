@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_current_user, get_jwt_identity,
 
 from app.models.post import Post
 from app.models.user import User
+from app.models.comment import Comment
 
 
 blog = Blueprint('blog', __name__)
@@ -22,11 +23,13 @@ def index():
 @jwt_required()
 def show_post(post_id):
   post = Post.find_post_by_id(post_id)
+  users_dict = User.get_dict_ids()
+  comments = Comment.find_comments_by_post(post_id)
 
   if post is None:
     return jsonify(message=f'Post with id {post_id} does not exist'), 404
 
-  return render_template('blog/post.html', post=post)
+  return render_template('blog/post.html', post=post, users_dict=users_dict, comments=comments)
 
 
 @blog.route('/create', methods=['GET', 'POST'])

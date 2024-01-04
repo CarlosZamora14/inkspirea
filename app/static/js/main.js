@@ -54,7 +54,7 @@ document.addEventListener('click', evt => {
   }
 }, true);
 
-const posts = document.querySelectorAll('.post');
+const posts = document.querySelectorAll('.post-card');
 posts.forEach(post => {
   post.addEventListener('click', evt => {
     window.location.href = `/posts/${post.dataset.postId}`;
