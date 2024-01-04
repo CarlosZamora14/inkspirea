@@ -30,13 +30,13 @@ class Comment:
     self._id = result.inserted_id
 
 
-  def update(self, content: str):
+  def update(self, content: str) -> None:
     mongo = current_app.mongo
 
     self.content = content
     self.updated_at = datetime.utcnow()
 
-    result = mongo.db.comments.update_one(
+    mongo.db.comments.update_one(
       {'_id': self._id},
       {
         '$set': {
@@ -45,8 +45,6 @@ class Comment:
         }
       }
     )
-
-    return result
 
 
   def to_dict(self) -> Dict[str, any]:
@@ -62,6 +60,17 @@ class Comment:
       comment_dict._id = self._id
 
     return comment_dict
+
+
+  def to_json(self) -> Dict[str, any]:
+    return {
+      '_id': str(self._id) if self._id else None,
+      'content': self.content,
+      'post_id': str(self.post_id),
+      'author_id': str(self.author_id),
+      'created_at': self.created_at.isoformat() if self.created_at else None,
+      'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+    }
 
 
   @classmethod

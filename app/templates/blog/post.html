@@ -10,7 +10,7 @@
       <p class="post__details">
         Posted by @{{ users_dict[post.author_id] }} on {{ post.created_at.strftime('%b %#d, %Y') }}.
         {% if post.updated_at %}
-          <span class="post__last-updated">(Updated: {{ post.updated_at.strftime('%b %#d, %Y')}} )</span>
+          <span class="post__last-updated">(Updated: {{ post.updated_at.strftime('%b %#d, %Y')}})</span>
         {% endif %}
       </p>
       <p class="post__body">
@@ -20,7 +20,7 @@
 
     <section class="comments-section">
       <h2 class="comments-section__title">Comment section</h2>
-      <form class="form">
+      <form class="form" id="create-comment" data-post-id="{{ post._id }}">
         <div class="form__field">
           <label for="comment" class="visually-hidden">Add new comment</label>
           <textarea name="comment" id="comment" placeholder="Write a comment" cols="30" rows="2" class="form__text-area"></textarea>
@@ -32,8 +32,8 @@
         <div class="comments">
           {% for comment in comments %}
             <div class="comment">
-              <h3>@{{ users_dict[comment.author_id] }} said:</h3>
-              <p>
+              <h3 class="comment__title">@{{ users_dict[comment.author_id] }} said:</h3>
+              <p class="comment__content">
                 {{ comment.content }}
               </p>
             </div>

@@ -44,7 +44,7 @@ class User:
 
   def to_json(self) -> Dict[str, any]:
     return {
-      '_id': str(self._id),
+      '_id': str(self._id) if self._id else None,
       'username': self.username,
       'password': self.password,
       'is_admin': self.is_admin,

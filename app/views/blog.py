@@ -106,3 +106,24 @@ def delete_post(post_id):
 
   post.delete()
   return jsonify(message=f'Post with id {post_id} has been deleted', data=post.to_json()), 200
+
+
+@blog.route('/comments', methods=['POST'])
+@jwt_required()
+def post_comment():
+  content = request.form.get('comment')
+  post_id = request.form.get('post-id')
+
+  if not content or not content.strip():
+    return jsonify(message=f'Comment can not be empty'), 400
+
+  post = Post.find_post_by_id(post_id)
+
+  if not post:
+    return jsonify(message=f'Post with id {post_id} does not exist'), 404
+
+  author = get_current_user()
+  new_comment = Comment(content, post._id, author._id)
+  new_comment.save()
+
+  return jsonify(new_comment.to_json()), 201

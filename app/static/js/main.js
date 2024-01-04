@@ -22,27 +22,44 @@ function getRequestOptions(body = null, method = 'POST') {
 
 const createPostForm = document.getElementById('create-post');
 const updatePostForm = document.getElementById('update-post');
+const createCommentForm = document.getElementById('create-comment');
 
 async function sendRequest(url, data, method) {
   const response = await fetch(url, getRequestOptions(data, method));
-  if (response.status === 201) {
-    window.location.href = '/';
-  }
+  return response;
 }
 
 if (createPostForm) {
-  createPostForm.addEventListener('submit', evt => {
+  createPostForm.addEventListener('submit', async evt => {
     evt.preventDefault();
     const formData = new FormData(evt.currentTarget);
-    sendRequest('/create', formData);
+    const response = await sendRequest('/create', formData);
+    if (response.status === 201) {
+      window.location.href = '/';
+    }
   });
 }
 
 if (updatePostForm) {
-  updatePostForm.addEventListener('submit', evt => {
+  updatePostForm.addEventListener('submit', async evt => {
     evt.preventDefault();
     const formData = new FormData(evt.currentTarget);
-    sendRequest(window.location.href, formData);
+    const response = await sendRequest(window.location.href, formData);
+    if (response.status === 201) {
+      window.location.href = '/';
+    }
+  });
+}
+
+if (createCommentForm) {
+  createCommentForm.addEventListener('submit', async evt => {
+    evt.preventDefault();
+    const formData = new FormData(evt.currentTarget);
+    formData.append('post-id', evt.currentTarget.dataset.postId);
+    const response = await sendRequest('/comments', formData);
+    if (response.status === 201) {
+      window.location.reload();
+    }
   });
 }
 

@@ -36,14 +36,14 @@ class Post:
     mongo.db.posts.delete_one({'_id': self._id})
 
 
-  def update(self, title: str, body: str):
+  def update(self, title: str, body: str) -> None:
     mongo = current_app.mongo
 
     self.title = title
     self.body = body
     self.updated_at = datetime.utcnow()
 
-    result = mongo.db.posts.update_one(
+    mongo.db.posts.update_one(
       {'_id': self._id},
       {
         '$set': {
@@ -53,8 +53,6 @@ class Post:
         }
       }
     )
-
-    return result
 
 
   def to_dict(self) -> Dict[str, any]:
@@ -74,7 +72,7 @@ class Post:
 
   def to_json(self) -> Dict[str, any]:
     return {
-      '_id': str(self._id),
+      '_id': str(self._id) if self._id else None,
       'title': self.title,
       'body': self.body,
       'author_id': str(self.author_id),
