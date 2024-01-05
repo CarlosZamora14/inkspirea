@@ -86,18 +86,32 @@
           </span>
         </button>
       {% endif %}
+
       <button class="like-button" >
-        <span class="visually-hidden">Like post</span>
-        <span aria-hidden="true">
-          <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
+        {% if g.user and find_if_user_likes_post(g.user._id, post._id) %}
+          <span class="visually-hidden">Unlike post</span>
+          <span aria-hidden="true">
+            <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart-filled"></use></svg>
+          </span>
+        {% else %}
+          <span class="visually-hidden">Like post</span>
+          <span aria-hidden="true">
+            <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
+          </span>
+        {% endif %}
+        <span class="post-card__button__counter">
+          <span class="visually-hidden">Number of likes</span>
+          {{ count_likes(post._id) }}
         </span>
-        <span>{{ count_likes(post._id) }}</span>
       </button>
-      <span class="comment-counter">
+      <span class="comment-button">
         <span aria-hidden="true">
           <svg fill="purple" viewBox="0 0 100 100" width="18"><use xlink:href="#message"></use></svg>
         </span>
-        <span>{{ count_comments(post._id) }}</span>
+        <span class="post-card__button__counter">
+          <span class="visually-hidden">Number of comments</span>
+          {{ count_comments(post._id) }}
+        </span>
       </span>
     </div>
   </div>

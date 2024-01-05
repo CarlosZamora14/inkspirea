@@ -67,6 +67,39 @@ class Like:
 
 
   @classmethod
+  def find_like_by_user_and_post(cls, user_id: str | ObjectId, post_id: str | ObjectId ) -> Optional['Like']:
+    mongo = current_app.mongo
+
+    if (isinstance(post_id, str)):
+      post_id = ObjectId(post_id)
+
+    if (isinstance(user_id, str)):
+      user_id = ObjectId(user_id)
+
+    like = mongo.db.likes.find_one({'user_id': user_id, 'post_id': post_id})
+
+    if like:
+      return cls(**like)
+
+    return None
+
+
+  @classmethod
+  def find_if_user_likes_post(cls, user_id: str | ObjectId, post_id: str | ObjectId) -> bool:
+    mongo = current_app.mongo
+
+    if (isinstance(post_id, str)):
+      post_id = ObjectId(post_id)
+
+    if (isinstance(user_id, str)):
+      user_id = ObjectId(user_id)
+
+    like = mongo.db.likes.find_one({'user_id': user_id, 'post_id': post_id})
+
+    return like is not None
+
+
+  @classmethod
   def count_likes_by_post(cls, post_id: str | ObjectId) -> int:
     mongo = current_app.mongo
 

@@ -695,7 +695,7 @@ h6 {
   margin-top: 0.75rem;
 }
 
-.post-card :is(.like-button, .delete-button, .comment-counter) {
+.post-card :is(.like-button, .delete-button, .comment-button) {
   padding-inline: 0.125rem;
   display: flex;
   height: 30px;
@@ -706,7 +706,8 @@ h6 {
   background-color: rgb(244, 246, 248);
 }
 
-.post-card :is(.like-button, .delete-button, .comment-counter)>span {
+.post-card :is(.like-button, .delete-button, .comment-button) > span {
+  pointer-events: none;
   height: 100%;
   min-width: 30px;
   font-size: 0.875rem;
@@ -723,6 +724,11 @@ h6 {
   margin-top: 0.75rem;
   color: purple;
   display: inline-block;
+}
+
+.post-card .post-card__buttons .post-card__button__counter {
+  min-width: unset;
+  padding-inline: 0.25rem;
 }
 
 /* Post page */

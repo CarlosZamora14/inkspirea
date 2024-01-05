@@ -22,7 +22,8 @@ def index():
     posts=posts,
     users_dict=users_dict,
     count_likes=Like.count_likes_by_post,
-    count_comments=Comment.count_comments_by_post
+    find_if_user_likes_post=Like.find_if_user_likes_post,
+    count_comments=Comment.count_comments_by_post,
   )
 
 
@@ -134,3 +135,27 @@ def post_comment():
   new_comment.save()
 
   return jsonify(new_comment.to_json()), 201
+
+
+@blog.route('/likes', methods=['POST'])
+@jwt_required()
+def like_post():
+  post_id = request.form.get('post-id')
+
+  post = Post.find_post_by_id(post_id)
+
+  if not post:
+    return jsonify(message=f'Post with id {post_id} does not exist'), 404
+
+  user_id = get_jwt_identity()
+
+  like = Like.find_like_by_user_and_post(user_id, post_id)
+
+  if like:
+    like.delete()
+    return jsonify(message=f'Like for post with id {post_id} deleted successfully'), 200
+
+  new_like = Like(ObjectId(user_id), ObjectId(post_id))
+  new_like.save()
+
+  return jsonify(message=f'Like for post with id {post_id} created successfully'), 201
