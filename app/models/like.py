@@ -67,10 +67,13 @@ class Like:
 
 
   @classmethod
-  def count_likes_by_post(cls, post_id: str) -> int:
+  def count_likes_by_post(cls, post_id: str | ObjectId) -> int:
     mongo = current_app.mongo
 
-    count = mongo.db.likes.count_documents({'post_id': ObjectId(post_id)})
+    if (isinstance(post_id, str)):
+      post_id = ObjectId(post_id)
+
+    count = mongo.db.likes.count_documents({'post_id': post_id})
 
     return count
 

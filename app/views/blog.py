@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required, get_current_user, get_jwt_identity,
 from app.models.post import Post
 from app.models.user import User
 from app.models.comment import Comment
+from app.models.like import Like
 
 
 blog = Blueprint('blog', __name__)
@@ -16,7 +17,13 @@ def index():
   posts = Post.fetch_all()
   users_dict = User.get_dict_ids()
 
-  return render_template('blog/index.html', posts=posts, users_dict=users_dict)
+  return render_template(
+    'blog/index.html',
+    posts=posts,
+    users_dict=users_dict,
+    count_likes=Like.count_likes_by_post,
+    count_comments=Comment.count_comments_by_post
+  )
 
 
 @blog.route('/posts/<post_id>', methods=['GET'])

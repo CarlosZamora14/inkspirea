@@ -103,5 +103,17 @@ class Comment:
     return None
 
 
+  @classmethod
+  def count_comments_by_post(cls, post_id: str | ObjectId) -> int:
+    mongo = current_app.mongo
+
+    if (isinstance(post_id, str)):
+      post_id = ObjectId(post_id)
+
+    count = mongo.db.comments.count_documents({'post_id': post_id})
+
+    return count
+
+
   def __repr__(self) -> str:
     return f'Comment: {self.content}'

@@ -74,15 +74,32 @@
       Posted by @{{ users_dict[post.author_id] }} on {{ post.created_at.strftime('%b %#d, %Y') }}.
     </p>
     <p>{{ post.body }}</p>
-    {% if g.user and g.user._id == post.author_id %}
-      <a href="{{ url_for('blog.update_post', post_id=post._id) }}"
-        style="margin-top: 0.75rem; color: purple; display: inline-block;">
-        Edit post
-      </a>
-      <button class="delete-button" style="cursor: pointer; margin-top: 0.75rem; color: purple; display: inline-block; border-radius: 0.25rem; border: 1px solid rgb(228, 228, 229); background-color: rgb(244, 246, 248); margin-left: 1rem;">
-        &#128465;
+    <div class="post-card__buttons">
+      {% if g.user and g.user._id == post.author_id %}
+        <a class="edit-link" href="{{ url_for('blog.update_post', post_id=post._id) }}">
+          Edit post
+        </a>
+        <button class="delete-button" >
+          <span class="visually-hidden">Delete post</span>
+          <span aria-hidden="true">
+            <svg aria-hidden="true" fill="purple" viewBox="0 0 32 32" width="20"><use xlink:href="#trash-can"></use></svg>
+          </span>
+        </button>
+      {% endif %}
+      <button class="like-button" >
+        <span class="visually-hidden">Like post</span>
+        <span aria-hidden="true">
+          <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
+        </span>
+        <span>{{ count_likes(post._id) }}</span>
       </button>
-    {% endif %}
+      <span class="comment-counter">
+        <span aria-hidden="true">
+          <svg fill="purple" viewBox="0 0 100 100" width="18"><use xlink:href="#message"></use></svg>
+        </span>
+        <span>{{ count_comments(post._id) }}</span>
+      </span>
+    </div>
   </div>
   {% endfor %}
 </section>
