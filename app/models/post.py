@@ -11,13 +11,15 @@ class Post:
     title: str,
     body: str,
     author_id: ObjectId,
-    _id: ObjectId = None,
+    photo_url: Optional[str] = None,
+    _id: Optional[ObjectId] = None,
     created_at: Optional[datetime] = None,
     updated_at: Optional[datetime] = None
   ) -> None:
     self._id = _id
     self.title = title
     self.body = body
+    self.photo_url = photo_url
     self.author_id = author_id
     self.created_at = created_at or datetime.utcnow()
     self.updated_at = updated_at
@@ -36,22 +38,22 @@ class Post:
     mongo.db.posts.delete_one({'_id': self._id})
 
 
-  def update(self, title: str, body: str) -> None:
+  def update(self, title: str, body: str, photo_url: Optional[str] = None) -> None:
     mongo = current_app.mongo
 
-    self.title = title
-    self.body = body
-    self.updated_at = datetime.utcnow()
+    updated_data = {
+      self.title: title,
+      self.body: body,
+      self.updated_at: datetime.utcnow(),
+    }
+
+    if photo_url is not None:
+      updated_data.photo_url = photo_url
+      # TODO: Delete previous photo
 
     mongo.db.posts.update_one(
       {'_id': self._id},
-      {
-        '$set': {
-          'title': self.title,
-          'body': self.body,
-          'updated_at': self.updated_at,
-        }
-      }
+      {'$set': updated_data}
     )
 
 
@@ -60,6 +62,7 @@ class Post:
       'title': self.title,
       'body': self.body,
       'author_id': self.author_id,
+      'photo_url': self.photo_url,
       'created_at': self.created_at,
       'updated_at': self.updated_at,
     }
@@ -76,6 +79,7 @@ class Post:
       'title': self.title,
       'body': self.body,
       'author_id': str(self.author_id),
+      'photo_url': self.photo_url,
       'created_at': self.created_at.isoformat() if self.created_at else None,
       'updated_at': self.updated_at.isoformat() if self.updated_at else None,
     }

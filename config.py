@@ -11,7 +11,10 @@ class Config:
   DEBUG = True
   TESTING = True
   SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
+
+  # File upload Configuration
   UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+  MAX_CONTENT_LENGTH = 16 * 1000 * 1000
 
   # MongoDB Configuration
   MONGO_URI = os.getenv('MONGO_URI')

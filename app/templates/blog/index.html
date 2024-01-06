@@ -81,7 +81,7 @@
         </a>
         <button class="delete-button" >
           <span class="visually-hidden">Delete post</span>
-          <span aria-hidden="true">
+          <span aria-hidden="true" class="span">
             <svg fill="purple" viewBox="0 0 32 32" width="20"><use xlink:href="#trash-can"></use></svg>
           </span>
         </button>
@@ -90,25 +90,25 @@
       <button class="like-button" >
         {% if g.user and find_if_user_likes_post(g.user._id, post._id) %}
           <span class="visually-hidden">Unlike post</span>
-          <span aria-hidden="true">
+          <span aria-hidden="true" class="span">
             <svg fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart-filled"></use></svg>
           </span>
         {% else %}
           <span class="visually-hidden">Like post</span>
-          <span aria-hidden="true">
+          <span aria-hidden="true" class="span">
             <svg fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
           </span>
         {% endif %}
-        <span class="post-card__button__counter">
+        <span class="post-card__button__counter span">
           <span class="visually-hidden">Number of likes</span>
           {{ count_likes(post._id) }}
         </span>
       </button>
       <span class="comment-button">
-        <span aria-hidden="true">
+        <span aria-hidden="true" class="span">
           <svg fill="purple" viewBox="0 0 100 100" width="18"><use xlink:href="#message"></use></svg>
         </span>
-        <span class="post-card__button__counter">
+        <span class="post-card__button__counter span">
           <span class="visually-hidden">Number of comments</span>
           {{ count_comments(post._id) }}
         </span>

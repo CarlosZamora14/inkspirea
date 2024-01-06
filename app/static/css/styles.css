@@ -17,6 +17,7 @@
 
 html {
   box-sizing: border-box;
+  height: auto;
 }
 
 *,
@@ -723,7 +724,7 @@ h6 {
   background-color: rgb(244, 246, 248);
 }
 
-.post-card :is(.like-button, .delete-button, .comment-button) > span {
+.post-card :is(.like-button, .delete-button, .comment-button) > .span {
   pointer-events: none;
   height: 100%;
   min-width: 30px;
@@ -746,6 +747,17 @@ h6 {
 .post-card .post-card__buttons .post-card__button__counter {
   min-width: unset;
   padding-inline: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post__image {
+  margin: 0 auto 0.5rem;
+  object-fit: cover;
+  margin-top: -1.5rem;
+  border-radius: 0.5rem;
+  max-height: max(50vh, 30rem);;
 }
 
 /* Post page */

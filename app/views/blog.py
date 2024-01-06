@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, url_for, redirect, flash, jsonify
+from flask import render_template, Blueprint, request, url_for, redirect, flash, jsonify, send_from_directory, current_app
 from flask_pymongo import ObjectId
 from flask_jwt_extended import jwt_required, get_current_user, get_jwt_identity, current_user
 
@@ -6,6 +6,10 @@ from app.models.post import Post
 from app.models.user import User
 from app.models.comment import Comment
 from app.models.like import Like
+
+from app.helpers.file_uploads import upload_file
+
+from werkzeug.exceptions import RequestEntityTooLarge
 
 
 blog = Blueprint('blog', __name__)
@@ -47,6 +51,7 @@ def create_post():
     title = request.form.get('title')
     body = request.form.get('body')
 
+
     error = None
     if not title or not title.strip():
       error = 'Title is required'
@@ -55,8 +60,17 @@ def create_post():
 
 
     if error is None:
+      # Handle file upload
+      file_url = None
+
+      if 'image' in request.files:
+        image = request.files.get('image')
+
+        if image.filename != '':
+          file_url = upload_file(image)
+
       author = get_current_user()
-      new_post = Post(title, body, author._id)
+      new_post = Post(title, body, author._id, file_url)
       new_post.save()
       return jsonify(new_post.to_json()), 201
     else:
@@ -159,3 +173,14 @@ def like_post():
   new_like.save()
 
   return jsonify(message=f'Like for post with id {post_id} created successfully'), 201
+
+
+@blog.route('/uploads/<name>')
+@jwt_required()
+def download_file(name):
+  return send_from_directory(current_app.config['UPLOAD_FOLDER'], name)
+
+
+@blog.errorhandler(RequestEntityTooLarge)
+def handle_request_entity_too_large(e):
+  return jsonify(message='The file size too large, the maximum file size allowed is 16 Megabytes'), 413

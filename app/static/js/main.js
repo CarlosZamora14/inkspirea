@@ -36,6 +36,9 @@ if (createPostForm) {
     const response = await sendRequest('/create', formData);
     if (response.status === 201) {
       window.location.href = '/';
+    } else if (response.status === 413) {
+      const data = await response.json();
+      console.log(data);
     }
   });
 }
@@ -67,12 +70,12 @@ document.addEventListener('click', async evt => {
   if (evt.target.classList.contains('delete-button')) {
     evt.stopPropagation();
     const button = evt.target;
-    sendRequest(`/delete/${button.parentElement.dataset['postId']}`, null, 'DELETE');
+    sendRequest(`/delete/${button.parentElement.parentElement.dataset['postId']}`, null, 'DELETE');
   } else if (evt.target.classList.contains('like-button')) {
     evt.stopPropagation();
     const button = evt.target;
-    const formData = new FormData()
-    formData.append('post-id', button.parentElement.parentElement.dataset['postId'])
+    const formData = new FormData();
+    formData.append('post-id', button.parentElement.parentElement.dataset['postId']);
     const response = await sendRequest('/likes', formData, 'POST');
     if (response.status === 201 || response.status === 200) {
       window.location.reload();
