@@ -11,6 +11,7 @@ class Config:
   DEBUG = True
   TESTING = True
   SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
+  UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 
   # MongoDB Configuration
   MONGO_URI = os.getenv('MONGO_URI')
@@ -19,6 +20,7 @@ class Config:
   JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
   JWT_TOKEN_LOCATION = 'cookies'
   JWT_CSRF_IN_COOKIES = True
+  JWT_SESSION_COOKIE = False
 
   JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=3600)  # 1 hour
   JWT_ACCESS_COOKIE_NAME = 'access_token_cookie'

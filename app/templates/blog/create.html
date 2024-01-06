@@ -7,6 +7,18 @@
   <div class="container">
     <h1 class="form__title">Create post</h1>
     <form method="POST" id="create-post" class="form">
+      <div class="form__field--file">
+        <label class="form__label--file" title="Upload a picture" for="image">
+          <span class="visually-hidden">
+            Upload a picture for your post
+          </span>
+          <span aria-hidden="true">
+            <svg stroke="#1D1D1D" fill="transparent" viewBox="0 0 32 32" width="20"><use xlink:href="#upload"></use></svg>
+          </span>
+        </label>
+        <input class="visually-hidden" type="file" name="image" class="form__input" id="image">
+      </div>
+
       <div class="form__field">
         <label for="title" class="form__label">Title</label>
         <input type="text" name="title" id="title" required class="form__input">

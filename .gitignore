@@ -42,3 +42,6 @@ htmlcov/
 # Database
 db.sqlite
 db.sqlite3
+
+# Upload folder
+uploads/

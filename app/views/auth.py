@@ -143,3 +143,5 @@ def set_cookies(response, current_user: str) -> None:
 
   set_access_cookies(response, access_token)
   set_refresh_cookies(response, refresh_token)
+  # Next line will basically delete the refresh CSRF cookie
+  # response.set_cookie(current_app.config.get('JWT_REFRESH_CSRF_COOKIE_NAME'), '', max_age=0)

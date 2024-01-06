@@ -7,6 +7,18 @@
   <div class="signup container">
     <h1 class="form__title">Signup</h1>
     <form method="POST" class="form">
+      <div class="form__field--file">
+        <label class="form__label--file" title="Upload your profile picture" for="image">
+          <span class="visually-hidden">
+            Upload a profile picture
+          </span>
+          <span aria-hidden="true">
+            <svg stroke="#1D1D1D" fill="transparent" viewBox="0 0 32 32" width="20"><use xlink:href="#upload"></use></svg>
+          </span>
+        </label>
+        <input class="visually-hidden" type="file" name="image" class="form__input" id="image">
+      </div>
+
       <div class="form__field">
         <label for="username" class="form__label">Username</label>
         <input type="text" name="username" id="username" required class="form__input">

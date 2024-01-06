@@ -82,7 +82,7 @@
         <button class="delete-button" >
           <span class="visually-hidden">Delete post</span>
           <span aria-hidden="true">
-            <svg aria-hidden="true" fill="purple" viewBox="0 0 32 32" width="20"><use xlink:href="#trash-can"></use></svg>
+            <svg fill="purple" viewBox="0 0 32 32" width="20"><use xlink:href="#trash-can"></use></svg>
           </span>
         </button>
       {% endif %}
@@ -91,12 +91,12 @@
         {% if g.user and find_if_user_likes_post(g.user._id, post._id) %}
           <span class="visually-hidden">Unlike post</span>
           <span aria-hidden="true">
-            <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart-filled"></use></svg>
+            <svg fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart-filled"></use></svg>
           </span>
         {% else %}
           <span class="visually-hidden">Like post</span>
           <span aria-hidden="true">
-            <svg aria-hidden="true" fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
+            <svg fill="purple" viewBox="0 0 100 100" width="20"><use xlink:href="#heart"></use></svg>
           </span>
         {% endif %}
         <span class="post-card__button__counter">
