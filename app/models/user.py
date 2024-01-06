@@ -10,13 +10,15 @@ class User:
     self,
     username: str,
     password: str,
-    _id: ObjectId = None,
+    photo_url: Optional[str] = None,
+    _id: Optional[ObjectId] = None,
     is_admin: bool = False,
     created_at: Optional[datetime] = None
   ) -> None:
     self._id = _id
     self.username = username
     self.password = password
+    self.photo_url = photo_url
     self.is_admin = is_admin
     self.created_at = created_at or datetime.utcnow()
 
@@ -32,6 +34,7 @@ class User:
     user_dict = {
       'username': self.username,
       'password': self.password,
+      'photo_url': self.photo_url,
       'is_admin': self.is_admin,
       'created_at': self.created_at,
     }
@@ -47,6 +50,7 @@ class User:
       '_id': str(self._id) if self._id else None,
       'username': self.username,
       'password': self.password,
+      'photo_url': self.photo_url,
       'is_admin': self.is_admin,
       'created_at': self.created_at.isoformat() if self.created_at else None,
     }

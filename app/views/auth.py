@@ -24,6 +24,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.models.user import User
 from app.helpers.url_utilities import decode_next_url
+from app.helpers.file_uploads import upload_file
 
 auth = Blueprint('auth', __name__)
 
@@ -95,7 +96,16 @@ def signup():
       user = User.find_by_username(username)
 
       if user is None:
-        new_user = User(username, generate_password_hash(password))
+        # Handle file upload
+        file_url = None
+
+        if 'image' in request.files:
+          image = request.files.get('image')
+
+          if image.filename != '':
+            file_url = upload_file(image)
+
+        new_user = User(username, generate_password_hash(password), file_url)
         new_user.save()
       else:
         error = f'The username {username} is already taken'
@@ -144,4 +154,4 @@ def set_cookies(response, current_user: str) -> None:
   set_access_cookies(response, access_token)
   set_refresh_cookies(response, refresh_token)
   # Next line will basically delete the refresh CSRF cookie
-  # response.set_cookie(current_app.config.get('JWT_REFRESH_CSRF_COOKIE_NAME'), '', max_age=0)
+  response.set_cookie(current_app.config.get('JWT_REFRESH_CSRF_COOKIE_NAME'), '', max_age=0)

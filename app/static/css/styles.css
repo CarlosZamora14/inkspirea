@@ -752,23 +752,16 @@ h6 {
   justify-content: center;
 }
 
-.post__image {
-  margin: 0 auto 0.5rem;
-  object-fit: cover;
-  margin-top: -1.5rem;
-  border-radius: 0.5rem;
-  max-height: max(50vh, 30rem);;
-}
 
 /* Post page */
-.post__title,
-.comments__title {
+.post__title {
   font-size: clamp(1.25rem, 2.4vw, 2rem);
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.1;
+  word-break: break-word;
 }
 
 .post__details {
-  margin-bottom: 1rem;
   font-size: clamp(0.875rem, 1vw, 1.25rem);
 }
 
@@ -779,6 +772,38 @@ h6 {
 
 .post__last-updated {
   font-style: italic;
+}
+
+.post__image {
+  margin: 0 auto 0.5rem;
+  object-fit: cover;
+  margin-top: -1.5rem;
+  border-radius: 0.5rem;
+  max-height: max(50vh, 30rem);;
+}
+
+.post__author-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.post__profile-pic {
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  box-shadow: 2px 2px 12px rgba(var(--primary-2-clr)), 1px 1px 8px rgba(var(--primary-1-clr) / 0.3);
+}
+
+@media only screen and (min-width: 20rem) {
+  .post__author-details {
+    flex-direction: row;
+    text-align: unset;
+  }
 }
 
 .comments-section {

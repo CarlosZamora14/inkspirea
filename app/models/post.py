@@ -35,6 +35,7 @@ class Post:
   def delete(self) -> None:
     mongo = current_app.mongo
 
+    # TODO: Delete photo from file system
     mongo.db.posts.delete_one({'_id': self._id})
 
 

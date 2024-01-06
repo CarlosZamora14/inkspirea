@@ -35,13 +35,19 @@ def index():
 @jwt_required()
 def show_post(post_id):
   post = Post.find_post_by_id(post_id)
-  users_dict = User.get_dict_ids()
-  comments = Comment.find_comments_by_post(post_id)
 
   if post is None:
     return jsonify(message=f'Post with id {post_id} does not exist'), 404
 
-  return render_template('blog/post.html', post=post, users_dict=users_dict, comments=comments)
+  users_dict = User.get_dict_ids()
+  comments = Comment.find_comments_by_post(post_id)
+  author = User.find_by_id(post.author_id)
+
+  print()
+  print(author)
+  print()
+
+  return render_template('blog/post.html', post=post, users_dict=users_dict, comments=comments, author=author)
 
 
 @blog.route('/create', methods=['GET', 'POST'])
@@ -105,7 +111,16 @@ def update_post(post_id):
 
 
     if error is None:
-      post.update(title, body)
+      # Handle file upload
+      file_url = None
+
+      if 'image' in request.files:
+        image = request.files.get('image')
+
+        if image.filename != '':
+          file_url = upload_file(image)
+
+      post.update(title, body, file_url)
       return jsonify(post.to_json()), 201
     else:
       return jsonify(error=error), 400

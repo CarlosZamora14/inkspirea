@@ -10,7 +10,7 @@ class Like:
     self,
     user_id: ObjectId,
     post_id: ObjectId,
-    _id: ObjectId = None,
+    _id: Optional[ObjectId] = None,
     created_at: Optional[datetime] = None,
   ) -> None:
     self._id = _id
