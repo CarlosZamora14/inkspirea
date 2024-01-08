@@ -57,7 +57,7 @@ class Comment:
     }
 
     if self._id is not None:
-      comment_dict._id = self._id
+      comment_dict['_id'] = self._id
 
     return comment_dict
 

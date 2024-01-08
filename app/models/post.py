@@ -43,13 +43,13 @@ class Post:
     mongo = current_app.mongo
 
     updated_data = {
-      self.title: title,
-      self.body: body,
-      self.updated_at: datetime.utcnow(),
+      'title': title,
+      'body': body,
+      'updated_at': datetime.utcnow(),
     }
 
     if photo_url is not None:
-      updated_data.photo_url = photo_url
+      updated_data['photo_url'] = photo_url
       # TODO: Delete previous photo
 
     mongo.db.posts.update_one(
@@ -69,7 +69,7 @@ class Post:
     }
 
     if self._id is not None:
-      post_dict._id = self._id
+      post_dict['_id'] = self._id
 
     return post_dict
 

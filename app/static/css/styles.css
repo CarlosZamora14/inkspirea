@@ -797,6 +797,8 @@ h6 {
   flex: 0 0 auto;
   border-radius: 50%;
   box-shadow: 2px 2px 12px rgba(var(--primary-2-clr)), 1px 1px 8px rgba(var(--primary-1-clr) / 0.3);
+  object-fit: cover;
+  object-position: center;
 }
 
 @media only screen and (min-width: 20rem) {

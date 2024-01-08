@@ -32,7 +32,8 @@
 
     <section class="comments-section">
       <h2 class="comments-section__title">Comment section</h2>
-      <form class="form" id="create-comment" data-post-id="{{ post._id }}">
+      <form class="form" id="create-comment">
+        <input name="post-id" type="hidden" value="{{ post._id }}" />
         <div class="form__field">
           <label for="comment" class="visually-hidden">Add new comment</label>
           <textarea name="comment" id="comment" placeholder="Write a comment" cols="30" rows="2" class="form__text-area"></textarea>

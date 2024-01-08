@@ -40,7 +40,7 @@ class Like:
     }
 
     if self._id is not None:
-      like_dict._id = self._id
+      like_dict['_id'] = self._id
 
     return like_dict
 

@@ -43,10 +43,6 @@ def show_post(post_id):
   comments = Comment.find_comments_by_post(post_id)
   author = User.find_by_id(post.author_id)
 
-  print()
-  print(author)
-  print()
-
   return render_template('blog/post.html', post=post, users_dict=users_dict, comments=comments, author=author)
 
 
@@ -102,6 +98,7 @@ def update_post(post_id):
   if request.method == 'POST':
     title = request.form.get('title')
     body = request.form.get('body')
+    print(title, body)
 
     error = None
     if not title or not title.strip():
@@ -113,6 +110,7 @@ def update_post(post_id):
     if error is None:
       # Handle file upload
       file_url = None
+      print(request.files)
 
       if 'image' in request.files:
         image = request.files.get('image')
@@ -166,7 +164,7 @@ def post_comment():
   return jsonify(new_comment.to_json()), 201
 
 
-@blog.route('/likes', methods=['POST'])
+@blog.post('/likes')
 @jwt_required()
 def like_post():
   post_id = request.form.get('post-id')
